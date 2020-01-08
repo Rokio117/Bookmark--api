@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS bookmark_user_book_info (
   ontab TEXT NOT NULL,
   currentpage INTEGER,
   startedon TEXT,
-  endedon TEXT
+  finishedon TEXT,
   userid INTEGER REFERENCES bookmark_users(id) NOT NULL,
   bookid INTEGER REFERENCES bookmark_books(id) NOT NULL
 )

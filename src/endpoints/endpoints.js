@@ -7,4 +7,6 @@ app.get("/api/*", (req, res) => {
   res.json({ ok: true });
 });
 
+//make sure when register you bcrypt the password before storing
+
 module.exports = { app };

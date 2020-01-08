@@ -9,7 +9,9 @@
     "predeploy": "npm audit",
     "deploy": "git push heroku master",
     "dev": "nodemon src/server.js",
-    "migrate": "postgrator --config postgrator-config.js"
+    "migrate": "postgrator --config postgrator-config.js",
+    "dropTestTables": "psql -U postgres -d bookmark-capstone-test -f ./seeds/drop.tables.sql",
+    "seed": "psql -U postgres -d bookmark-capstone-test -f ./seeds/seed.bookmark_tables.sql"
   },
   "keywords": [],
   "engines": {
@@ -18,10 +20,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "helmet": "^3.21.1",
+    "knex": "^0.20.7",
     "morgan": "^1.9.1",
     "pg": "^7.17.0",
     "postgrator": "^3.11.0"
