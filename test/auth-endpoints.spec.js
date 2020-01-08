@@ -1,6 +1,7 @@
 const knex = require("knex");
 const app = require("../src/app");
 const testHelpers = require("./testHelper");
+const expectedData = require("./expectedData");
 const seedData = require("./seedData");
 
 describe.only("Auth Endpoints", () => {
@@ -13,6 +14,8 @@ describe.only("Auth Endpoints", () => {
     });
     app.set("db", db);
   });
+
+  const testUser = expectedData.testUser();
 
   //const allData = seedData.allTestData();
 
