@@ -8,9 +8,13 @@
     "start": "node src/server.js",
     "predeploy": "npm audit",
     "deploy": "git push heroku master",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "migrate": "postgrator --config postgrator-config.js"
   },
   "keywords": [],
+  "engines": {
+    "node": "10.16.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -18,6 +22,11 @@
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "helmet": "^3.21.1",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "pg": "^7.17.0",
+    "postgrator": "^3.11.0"
+  },
+  "devDependencies": {
+    "postgrator-cli": "^3.2.0"
   }
 }
