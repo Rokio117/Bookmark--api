@@ -1,8 +1,16 @@
 const express = require("express");
-
+const jsonBodyParser = express.json();
 const authRouter = express.Router();
 
-authRouter.post("/login", (req, res, next) => {
+authRouter.post("/login", jsonBodyParser, (req, res, next) => {
+  console.log(req.body, "req.body of test");
+  const { user_name, password } = req.body;
+  const loginUser = { user_name, password };
+  for (const [key, value] of Object.entries(loginUser))
+    if (value == null)
+      return res.status(400).json({
+        error: `Missing '${key}' in request body`
+      });
   res.send("ok");
 });
 

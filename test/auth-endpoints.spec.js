@@ -1,4 +1,6 @@
-const knex = require("knex");
+require("dotenv").config();
+const knex = require(`knex`);
+const supertest = require("supertest");
 const app = require("../src/app");
 const testHelpers = require("./testHelper");
 const expectedData = require("./expectedData");
@@ -10,21 +12,17 @@ describe.only("Auth Endpoints", () => {
   before("make knex instance", () => {
     db = knex({
       client: "pg",
-      connection: process.env.TEST_DB_URL
+      connection: process.env.TEST_DATABASE_URL
     });
     app.set("db", db);
   });
-
-  const testUser = expectedData.testUser();
+  console.log(db, "db in test");
 
   //const allData = seedData.allTestData();
 
   after("disconnect from db", () => db.destroy());
   before("clean tables", () => testHelpers.cleanTables(db));
   afterEach("clean tables", () => testHelpers.cleanTables(db));
-  // before('seed tables',()=>{
-  //   testHelpers.seedAllTables(allData)
-  // });
 
   describe(`Post /api/auth/login`, () => {
     beforeEach(`Insert users`, () => {
@@ -33,17 +31,20 @@ describe.only("Auth Endpoints", () => {
     const requiredFields = ["user_name", "password"];
 
     requiredFields.forEach(field => {
+      const testUser = expectedData.testUser();
+
       const loginAttemptBody = {
         user_name: testUser.user_name,
         password: testUser.password
       };
       it(`responds with 400 required error when '${field}' is missing`, () => {
         delete loginAttemptBody[field];
+        console.log(loginAttemptBody, "body after deleting field");
         return supertest(app)
           .post(`/api/auth/login`)
           .send(loginAttemptBody)
           .expect(400, {
-            error: `Missing field ${field} in request body`
+            error: `Missing '${field}' in request body`
           });
       });
     });

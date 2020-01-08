@@ -122,7 +122,7 @@ const seedData = {
     return {
       users: this.users(),
       books: this.books(),
-      userBookInfos: this.userBookInfo(),
+      userBookInfos: this.userBookInfos(),
       authors: this.authors(),
       notes: this.notes()
     };
