@@ -141,12 +141,10 @@ function catchError(err, req, res, next) {
 
 function userExists(req, res, next) {
   //!!!!!! sets user property to req
-  console.log(req.body, "req.body in userExists");
-  console.log(req.body.user_name, "req.body.username");
+
   authService
     .getUserWithUserName(req.app.get("db"), req.body.user_name)
     .then(user => {
-      console.log(user, "user after getuser");
       if (!user.length) {
         let err = new Error("Incorrect username or password");
         err.status = 400;

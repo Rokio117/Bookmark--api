@@ -17,7 +17,6 @@ describe("Auth Endpoints", () => {
     });
     app.set("db", db);
   });
-  console.log(db, "db in test");
 
   //const allData = seedData.allTestData();
 
@@ -40,7 +39,7 @@ describe("Auth Endpoints", () => {
       };
       it.skip(`responds with 400 required error when '${field}' is missing`, () => {
         delete loginAttemptBody[field];
-        console.log(loginAttemptBody, "body after deleting field");
+
         return supertest(app)
           .post(`/api/auth/login`)
           .send(loginAttemptBody)

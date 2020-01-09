@@ -21,8 +21,11 @@ authRouter.post(
 
     const response = {
       ...req.user,
-      authToken: authService.createJwt(req.user.username, req.user.id)
+      authToken: authService.createJwt(req.user.username, {
+        user_id: req.user.id
+      })
     };
+
     res.json(response);
   }
 );
