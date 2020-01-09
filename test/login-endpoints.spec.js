@@ -7,7 +7,7 @@ const expectedData = require("./expectedData");
 const seedData = require("./seedData");
 const jwt = require("jsonwebtoken");
 
-describe("Auth Endpoints", () => {
+describe.skip("Auth Endpoints", () => {
   let db;
 
   before("make knex instance", () => {
@@ -79,7 +79,7 @@ describe("Auth Endpoints", () => {
           .expect(400, { error: `Incorrect username or password` });
       });
     });
-    describe.only(`happy path for post login`, () => {
+    describe(`happy path for post login`, () => {
       it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
         const testUser = expectedData.testUser();
         const loginCredentials = {

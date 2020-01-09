@@ -3,7 +3,8 @@ const bookmarkService = require("./bookmark-service");
 const authService = require("./auth-service");
 const knex = require("knex");
 const bcrypt = require("bcryptjs");
-
+const config = require("../config");
+const jwt = require("jsonwebtoken");
 const notNullStringKeys = [
   "googleid",
   "title",
@@ -11,7 +12,8 @@ const notNullStringKeys = [
   "notetitle",
   "notecontent",
   "user_name",
-  "password"
+  "password",
+  "repeat_password"
 ];
 
 const notNullArrayKeys = ["authors"];
@@ -145,7 +147,13 @@ function userExists(req, res, next) {
   authService
     .getUserWithUserName(req.app.get("db"), req.body.user_name)
     .then(user => {
-      if (!user.length) {
+      if (req.body.repeat_password) {
+        if (user.length) {
+          let err = new Error("Username is taken");
+          err.status = 400;
+          return next(err);
+        }
+      } else if (!user.length) {
         let err = new Error("Incorrect username or password");
         err.status = 400;
         return next(err);
@@ -170,10 +178,32 @@ function checkPasswords(req, res, next) {
     });
 }
 
+function verifyJwt(req, res, next) {
+  const authToken = req.get("Authorization") || "";
+  let bearerToken;
+  if (!authToken.toLowerCase().startsWith("bearer")) {
+    let err = new Error(`Missing bearer token`);
+    err.status = 401;
+    return next(err);
+  } else {
+    bearerToken = authToken.slice(7, authToken.length);
+  }
+  try {
+    jwt.verifyJwt(bearerToken, config.JWT_SECRET, {
+      algorithms: ["HS256"]
+    });
+  } catch (error) {
+    let err = new Error("Unauthorized request");
+    err.status = 401;
+    next(err);
+  }
+}
+
 module.exports = {
   validateRequiredKeys,
   validateValueTypes,
   catchError,
   userExists,
-  checkPasswords
+  checkPasswords,
+  verifyJwt
 };
