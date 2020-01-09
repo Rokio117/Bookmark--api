@@ -5,8 +5,9 @@ const app = require("../src/app");
 const testHelpers = require("./testHelper");
 const expectedData = require("./expectedData");
 const seedData = require("./seedData");
+const jwt = require("jsonwebtoken");
 
-describe.only("Auth Endpoints", () => {
+describe("Auth Endpoints", () => {
   let db;
 
   before("make knex instance", () => {
@@ -26,7 +27,7 @@ describe.only("Auth Endpoints", () => {
 
   describe(`Post /api/auth/login`, () => {
     beforeEach(`Insert users`, () => {
-      testHelpers.seedUsers(db, seedData.users);
+      return testHelpers.seedUsers(db, seedData.users());
     });
     const requiredFields = ["user_name", "password"];
 
@@ -37,15 +38,72 @@ describe.only("Auth Endpoints", () => {
         user_name: testUser.user_name,
         password: testUser.password
       };
-      it(`responds with 400 required error when '${field}' is missing`, () => {
+      it.skip(`responds with 400 required error when '${field}' is missing`, () => {
         delete loginAttemptBody[field];
         console.log(loginAttemptBody, "body after deleting field");
         return supertest(app)
           .post(`/api/auth/login`)
           .send(loginAttemptBody)
           .expect(400, {
-            error: `Missing '${field}' in request body`
+            error: `Missing key '${field}' in request body`
           });
+      });
+
+      it.skip(`responds 400 'invalid user_name or password' when bad user_name`, () => {
+        const userInvalidUser = { user_name: "user-not", password: "existy" };
+        return supertest(app)
+          .post("/api/auth/login")
+          .send(userInvalidUser)
+          .expect(400, { error: `Incorrect username or password` });
+      });
+    });
+    describe.skip(`Testing user_name and password data types`, () => {
+      const keys = ["user_name", "password"];
+
+      keys.forEach(key => {
+        let testUser = expectedData.testUserNoId();
+        testUser[key] = false;
+        it(`responds 400 'incorrect data type' when sending in wrong data types`, () => {
+          return supertest(app)
+            .post("/api/auth/login")
+            .send(testUser)
+            .expect({ error: `${key} must be a string` });
+        });
+      });
+    });
+    describe.skip(`test for matching passwords`, () => {
+      it(`responds 400 'invalid username or password' when given incorrect password`, () => {
+        const userInvalidPassword = { user_name: "Demo", password: "hewligan" };
+        return supertest(app)
+          .post("/api/auth/login")
+          .send(userInvalidPassword)
+          .expect(400, { error: `Incorrect username or password` });
+      });
+    });
+    describe.only(`happy path for post login`, () => {
+      it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
+        const testUser = expectedData.testUser();
+        const loginCredentials = {
+          user_name: testUser.user_name,
+          password: "password"
+        };
+        //console.log(db.select('*').from("bookmark_users"))
+        const expectedToken = jwt.sign(
+          { user_id: testUser.id },
+          process.env.JWT_SECRET,
+          {
+            subject: testUser.user_name,
+            algorithm: "HS256"
+          }
+        );
+        const expectedUserObject = {
+          ...expectedData.testUserNoUnderscore(),
+          authToken: expectedToken
+        };
+        return supertest(app)
+          .post("/api/auth/login")
+          .send({ user_name: "Demo", password: "password" })
+          .expect(expectedUserObject);
       });
     });
   });

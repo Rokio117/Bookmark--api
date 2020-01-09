@@ -5,6 +5,7 @@ const testHelpers = {
     return bcrypt.compare(encryptedPassword, userPassword);
   },
   seedUsers(db, users) {
+    console.log(users, "users in seedUsers");
     return db.into("bookmark_users").insert(users);
   },
   seedBooks(db, books) {
