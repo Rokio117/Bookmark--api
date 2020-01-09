@@ -23,7 +23,7 @@ describe.only("register tests", () => {
   describe("Post /api/auth/register", () => {
     it(`happy case, responds with new  user info andhashed pw and jwt token`, () => {
       return supertest(app)
-        .post("/api/auth/login")
+        .post("/api/auth/register")
         .send(testData.newUser())
         .expect(expectedData.registeredUser(testData.newUser()));
     });

@@ -47,7 +47,8 @@ authRouter.post(
       helpers.registerUser(req.app.get("db"), userObject).then(user => {
         const newUser = user[0];
         const responseJwt = {
-          ...newUser,
+          username: newUser.username,
+          id: newUser.id,
           authToken: authService.createJwt(newUser.username, {
             user_id: newUser.id
           })

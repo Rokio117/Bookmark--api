@@ -22,17 +22,14 @@ const expectedData = {
     };
   },
   registeredUser(userObject) {
-    return helpers.hashPassword(userObject.password).then(hashedPassword => {
-      const jwtToken = authService.createJwt(userObject.user_name, {
-        user_id: 1
-      });
-      return {
-        id: 1,
-        username: "Demo2",
-        password: hashedPassword,
-        authToken: jwtToken
-      };
+    const jwtToken = authService.createJwt(userObject.user_name, {
+      user_id: 1
     });
+    return {
+      id: 1,
+      username: "Demo2",
+      authToken: jwtToken
+    };
   }
 };
 
