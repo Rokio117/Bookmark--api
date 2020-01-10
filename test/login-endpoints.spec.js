@@ -7,7 +7,7 @@ const expectedData = require("./expectedData");
 const seedData = require("./seedData");
 const jwt = require("jsonwebtoken");
 
-describe.skip("Auth Endpoints", () => {
+describe("Auth Endpoints", () => {
   let db;
 
   before("make knex instance", () => {
@@ -37,7 +37,7 @@ describe.skip("Auth Endpoints", () => {
         user_name: testUser.user_name,
         password: testUser.password
       };
-      it.skip(`responds with 400 required error when '${field}' is missing`, () => {
+      it(`responds with 400 required error when '${field}' is missing`, () => {
         delete loginAttemptBody[field];
 
         return supertest(app)
@@ -48,7 +48,7 @@ describe.skip("Auth Endpoints", () => {
           });
       });
 
-      it.skip(`responds 400 'invalid user_name or password' when bad user_name`, () => {
+      it(`responds 400 'invalid user_name or password' when bad user_name`, () => {
         const userInvalidUser = { user_name: "user-not", password: "existy" };
         return supertest(app)
           .post("/api/auth/login")
@@ -56,7 +56,7 @@ describe.skip("Auth Endpoints", () => {
           .expect(400, { error: `Incorrect username or password` });
       });
     });
-    describe.skip(`Testing user_name and password data types`, () => {
+    describe(`Testing user_name and password data types`, () => {
       const keys = ["user_name", "password"];
 
       keys.forEach(key => {
@@ -70,7 +70,7 @@ describe.skip("Auth Endpoints", () => {
         });
       });
     });
-    describe.skip(`test for matching passwords`, () => {
+    describe(`test for matching passwords`, () => {
       it(`responds 400 'invalid username or password' when given incorrect password`, () => {
         const userInvalidPassword = { user_name: "Demo", password: "hewligan" };
         return supertest(app)
@@ -95,6 +95,9 @@ describe.skip("Auth Endpoints", () => {
             algorithm: "HS256"
           }
         );
+
+        const splitToken = expectedToken.split(".");
+        console.log(splitToken, "splitToken");
         const expectedUserObject = {
           ...expectedData.testUserNoUnderscore(),
           authToken: expectedToken

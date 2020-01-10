@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS bookmark_notes(
   notetitle TEXT NOT NULL,
   notedate TEXT ,
   notecontent TEXT NOT NULL,
-  bookinfoid INTEGER REFERENCES bookmark_user_book_info(id) NOT NULL
+  bookinfoid INTEGER REFERENCES bookmark_user_book_info(id) ON DELETE CASCADE NOT NULL 
 )

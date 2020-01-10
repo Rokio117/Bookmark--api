@@ -180,6 +180,7 @@ function checkPasswords(req, res, next) {
 
 function verifyJwt(req, res, next) {
   const authToken = req.get("Authorization") || "";
+
   let bearerToken;
   if (!authToken.toLowerCase().startsWith("bearer")) {
     let err = new Error(`Missing bearer token`);
@@ -189,14 +190,15 @@ function verifyJwt(req, res, next) {
     bearerToken = authToken.slice(7, authToken.length);
   }
   try {
-    jwt.verifyJwt(bearerToken, config.JWT_SECRET, {
+    jwt.verify(bearerToken, config.JWT_SECRET, {
       algorithms: ["HS256"]
     });
   } catch (error) {
     let err = new Error("Unauthorized request");
     err.status = 401;
-    next(err);
+    return next(err);
   }
+  next();
 }
 
 module.exports = {
