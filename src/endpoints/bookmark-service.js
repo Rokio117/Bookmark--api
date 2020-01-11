@@ -120,6 +120,21 @@ const helpers = {
       .from("bookmark_notes")
       .where({ bookinfoid });
     //may need to be whereIn
+  },
+  getUserBookInfo(knex, userid) {
+    return knex
+      .select("*")
+      .from("bookmark_user_book_info")
+      .where({ userid });
+  },
+  getfullUserBookInfo(knex, id) {
+    //bookInfoId
+    return knex
+      .select("*")
+      .from("bookmark_user_book_info")
+      .then(userBookinfo => {
+        return userBookinfo;
+      });
   }
 };
 
