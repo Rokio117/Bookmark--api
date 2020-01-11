@@ -9,8 +9,8 @@ and history. A team member can have a role of Captain, Reporter, Member, or Gues
 example, a Captain can add events to the teams history and change the teams settings, whereas a Reporter can only add events to the teams history.
 
 ## Technologies Used
-
-Trivia Tracker client was created using ReactJs framework. The API was created using NodeJs and Express
+![](readmeimages/React-logo.png)
+Trivia Tracker was created using ReactJs framework. The API 
 
 
 ## Deploying
