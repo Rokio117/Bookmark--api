@@ -1,25 +1,17 @@
-# Express Boilerplate!
+# Trivia Tracker
 
-This is a boilerplate project used for starting new projects!
 
-## Set up
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+## What is Trivia Tracker?
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+Trivia tracker is a webpage that helps pub trivia players keep track of their teams progress. A team can document their wins, winnings,
+and history. A team member can have a role of Captain, Reporter, Member, or Guest. Each role can do a different job for the team. For
+example, a Captain can add events to the teams history and change the teams settings, whereas a Reporter can only add events to the teams history.
 
-## Scripts
+## Technologies Used
+![](readmeimages/React-logo.png)
+Trivia Tracker was created using ReactJs framework. The API 
 
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`
 
 ## Deploying
 
