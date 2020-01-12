@@ -7,7 +7,7 @@ const expectedData = require("./expectedData");
 const seedData = require("./seedData");
 const jwt = require("jsonwebtoken");
 
-describe("Auth Endpoints", () => {
+describe.skip("Auth Endpoints", () => {
   let db;
 
   before("make knex instance", () => {

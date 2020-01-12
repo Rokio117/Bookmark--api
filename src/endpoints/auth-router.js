@@ -20,7 +20,7 @@ authRouter.post(
     const response = {
       ...req.user,
       authToken: authService.createJwt(req.user.username, {
-        user_id: req.user.id
+        userid: req.user.id
       })
     };
 
@@ -50,7 +50,7 @@ authRouter.post(
           username: newUser.username,
           id: newUser.id,
           authToken: authService.createJwt(newUser.username, {
-            user_id: newUser.id
+            userid: newUser.id
           })
         };
         res.json(responseJwt);

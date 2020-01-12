@@ -26,7 +26,7 @@ const stringOrNullKeys = [
   "notedate"
 ];
 
-const numberOrNullKeys = ["currentPage"];
+const numberOrNullKeys = ["currentPage", "userid"];
 
 const allPossibleKeys = [
   ...notNullStringKeys,

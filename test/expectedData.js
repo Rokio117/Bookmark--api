@@ -30,6 +30,16 @@ const expectedData = {
       username: "Demo2",
       authToken: jwtToken
     };
+  },
+  expectedUserBookInfo() {
+    return {
+      onTab: "finished",
+      currentpage: null,
+      startedon: null,
+      finishedon: null,
+      userid: 1,
+      bookid: 1
+    };
   }
 };
 

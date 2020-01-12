@@ -60,6 +60,62 @@ bookmarkRouter.get(
   }
 );
 
+bookmarkRouter.post(
+  "/userinfo/:username/books/add",
+  jsonBodyParser,
+  verifyJwt,
+  validateRequiredKeys([
+    "ontab",
+    "currentpage",
+    "startedon",
+    "finishedon",
+    "userid",
+    "title",
+    "coverart",
+    "description",
+    "googleid"
+  ]),
+  (req, res, next) => {
+    const {
+      ontab,
+      currentpage,
+      startedon,
+      finishedon,
+      userid,
+      title,
+      coverart,
+      description,
+      googleid
+    } = req.body;
+    const bookObject = {
+      title,
+      coverart,
+      description,
+      googleid
+    };
+    const userBookInfoObject = {
+      ontab,
+      currentpage,
+      startedon,
+      finishedon,
+      userid
+    };
+    helpers
+      .findOrPostBook(req.app.get("db"), googleid, bookObject)
+      .then(bookid => {
+        console.log(bookid, "bookid after find or post book");
+
+        const fullUserBook = { ...userBookInfoObject, bookid: bookid };
+        console.log(fullUserBook, "fulluserbook");
+        helpers
+          .postUserBookInfo(req.app.get("db"), fullUserBook)
+          .then(response => {
+            res.json(response);
+          });
+      });
+  }
+);
+
 bookmarkRouter.use(catchError);
 
 module.exports = bookmarkRouter;

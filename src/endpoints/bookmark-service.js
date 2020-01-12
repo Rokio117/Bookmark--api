@@ -42,11 +42,22 @@ const helpers = {
       .from("bookmark_books")
       .where({ googleid })
       .then(foundId => {
-        if (!foundId.length) {
+        console.log(foundId[0], "foundin in find or post book");
+        if (!foundId[0]) {
+          console.log("went top path");
           return knex("bookmark_books")
             .insert(bookObject)
-            .returning("id");
-        } else return foundId[0];
+            .returning("id")
+            .then(result => {
+              //sends an array with one number in it
+              console.log(result, "result after insert");
+              return result[0];
+            });
+        } else {
+          //sends an array with an object with key id in it
+          console.log(foundId[0].id, "went bottom path");
+          return foundId[0].id;
+        }
       });
   },
   findAuthor(knex, name, bookid) {
@@ -126,15 +137,6 @@ const helpers = {
       .select("*")
       .from("bookmark_user_book_info")
       .where({ userid });
-  },
-  getfullUserBookInfo(knex, id) {
-    //bookInfoId
-    return knex
-      .select("*")
-      .from("bookmark_user_book_info")
-      .then(userBookinfo => {
-        return userBookinfo;
-      });
   }
 };
 

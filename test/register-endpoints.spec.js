@@ -8,7 +8,7 @@ const seedData = require("./seedData");
 const jwt = require("jsonwebtoken");
 const testData = require("./testData");
 
-describe.only("register tests", () => {
+describe.skip("register tests", () => {
   before("make knex instance", () => {
     db = knex({
       client: "pg",
