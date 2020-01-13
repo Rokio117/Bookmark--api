@@ -8,7 +8,7 @@ const seedData = require("./seedData");
 const jwt = require("jsonwebtoken");
 const testData = require("./testData");
 
-describe.skip("register tests", () => {
+describe("register tests", () => {
   before("make knex instance", () => {
     db = knex({
       client: "pg",
@@ -20,12 +20,44 @@ describe.skip("register tests", () => {
   before("clean tables", () => testHelpers.cleanTables(db));
   afterEach("clean tables", () => testHelpers.cleanTables(db));
 
-  describe("Post /api/auth/register", () => {
+  describe.skip("Post /api/auth/register", () => {
+    //sometimes passes sometimes fails based on the IID of jwt in the response
+    //if failing try run independently
     it(`happy case, responds with new  user info andhashed pw and jwt token`, () => {
+      const authToken = testHelpers
+        .authHeader()
+        .slice(7, testHelpers.authHeader().length);
+
+      const expectedReturn = {
+        id: 1,
+        username: "Demo",
+        password:
+          "$2a$12$XFXXLoeBCpkD6nkZtdoSEeI.6BEpEk4cC/djrnYB/Da8HjkC/tmzi",
+        authToken: authToken
+      };
       return supertest(app)
         .post("/api/auth/register")
         .send(testData.newUser())
-        .expect(expectedData.registeredUser(testData.newUser()));
+
+        .expect(expectedReturn);
     });
   });
 });
+
+// .then(result => {
+//           const resultTokenNoIID = result.authToken
+//             .split(".")
+//             .pop()
+//             .join(".");
+//           const newResult = {
+//             id: result.id,
+//             password: result.password,
+//             username: result.username,
+//             authToken: resultTokenNoIID
+//           };
+//           return newResult;
+//         })
+
+//  let authTokenNoIID = authToken.split(".");
+//  authTokenNoIID.pop();
+//  authTokenNoIID = authTokenNoIID.join(".");

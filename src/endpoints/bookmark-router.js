@@ -11,6 +11,7 @@ const { verifyJwt } = require("./middleware");
 const helpers = require("./bookmark-service");
 const authService = require("./auth-service");
 const { validateBookExists } = require("./middleware");
+const { verifyTab } = require("./middleware");
 
 bookmarkRouter.get("/testJwt", jsonBodyParser, verifyJwt, (req, res) => {
   res.json({ ok: true });
@@ -65,6 +66,7 @@ bookmarkRouter.post(
   "/userinfo/:username/books/add",
   jsonBodyParser,
   verifyJwt,
+
   validateRequiredKeys([
     "ontab",
     "currentpage",
@@ -76,6 +78,7 @@ bookmarkRouter.post(
     "description",
     "googleid"
   ]),
+  verifyTab,
   (req, res, next) => {
     const {
       ontab,
@@ -173,7 +176,8 @@ bookmarkRouter
         bookinfoid: bookInfoId
       };
       console.log(newNoteObject, "newNoteObject");
-      helpers.findBook(req.app.get("db"), bookInfoId).then(foundId => {
+      helpers.findBookInfoById(req.app.get("db"), bookInfoId).then(foundId => {
+        console.log(foundId, "foundId after findbookbyid");
         if (!foundId.length) {
           let err = new Error("Book for note found");
           err.status = 404;
@@ -184,6 +188,64 @@ bookmarkRouter
           });
         }
       });
+    }
+  );
+
+bookmarkRouter
+  .route("/:username/book/update")
+  .patch(
+    jsonBodyParser,
+    verifyJwt,
+    validateRequiredKeys([
+      "currentpage",
+      "startedon",
+      "finishedon",
+      "bookInfoId"
+    ]),
+    (req, res, next) => {
+      const { currentpage, startedon, finishedon, bookInfoId } = req.body;
+      const newBookInfo = { currentpage, startedon, finishedon };
+      helpers.findBookInfoById(req.app.get("db"), bookInfoId).then(foundId => {
+        if (!foundId.length) {
+          let err = new Error("Book not found");
+          err.status = 404;
+          return next(err);
+        } else {
+          helpers
+            .updateUserBook(req.app.get("db"), newBookInfo, bookInfoId)
+            .then(response => {
+              res.json(response);
+            });
+        }
+      });
+    }
+  );
+
+bookmarkRouter
+  .route("/book/changeTab")
+  .patch(
+    jsonBodyParser,
+    verifyJwt,
+    validateRequiredKeys(["bookInfoId", "ontab"]),
+    verifyTab,
+    (req, res, next) => {
+      const { bookInfoId, ontab } = req.body;
+
+      helpers
+        .findBookInfoById(req.app.get("db"), bookInfoId)
+        .then(foundBookInfoId => {
+          if (!foundBookInfoId.length) {
+            let err = new Error("Book not found");
+            err.status = 404;
+            return next(err);
+          } else {
+            helpers
+              .patchUserBookInfoOnTab(req.app.get("db"), bookInfoId, ontab)
+              .then(response => {
+                res.json(response);
+              });
+          }
+        });
     }
   );
 

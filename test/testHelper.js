@@ -61,6 +61,12 @@ const testHelpers = {
       id: 1
     };
     return this.makeAuthHeader(user, process.env.JWT_SECRET);
+  },
+  splitTokens(token) {
+    const splitToken = token.split(".");
+    splitToken.pop();
+    const returnToken = splitToken.join(".");
+    return returnToken;
   }
 };
 

@@ -1,7 +1,7 @@
 const testData = {
   newUser() {
     return {
-      user_name: "Demo2",
+      user_name: "Demo",
       password: "password",
       repeat_password: "password"
     };
@@ -24,6 +24,65 @@ const testData = {
   },
   authHeader() {
     return `Bearer=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1Nzg2Mjc0ODQsInN1YiI6IkRlbW8ifQ.SB1q4_35AGpThyAhqpDibRB8-lggHD4DqiBx2y64XlI`;
+  },
+  newNote() {
+    return {
+      notetitle: "Gosh",
+      notedate: "12-12-2020",
+      notecontent: "Gee wiz",
+      bookInfoId: 1
+    };
+  },
+  expectedNote() {
+    return [
+      {
+        id: 5,
+        notetitle: "Gosh",
+        notedate: "12-12-2020",
+        notecontent: "Gee wiz",
+        bookinfoid: 1
+      }
+    ];
+  },
+  patchBookInfo() {
+    return {
+      currentpage: 111,
+      startedon: "01-13-2020",
+      finishedon: "01-13-2020",
+      bookInfoId: 2
+    };
+  },
+  expectedPatchBookInfo() {
+    return [
+      {
+        id: 2,
+        ontab: "finished",
+        currentpage: 111,
+        startedon: "01-13-2020",
+        finishedon: "01-13-2020",
+        userid: 1,
+        bookid: 2
+      }
+    ];
+  },
+  sendNewTab() {
+    return {
+      bookInfoId: 1,
+      ontab: "current"
+    };
+  },
+  expectedNewTab() {
+    return [
+      {
+        id: 1,
+        ontab: "current",
+        currentpage: 171,
+        startedon: "2018-10-11",
+        finishedon: "2018-10-11",
+        userid: 1,
+        bookid: 1
+      }
+    ];
   }
 };
 

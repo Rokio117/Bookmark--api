@@ -225,6 +225,18 @@ function validateBookExists(req, res, next) {
     });
 }
 
+function verifyTab(req, res, next) {
+  const expectedTabs = ["finished", "current", "upcoming"];
+  if (!expectedTabs.includes(req.body.ontab)) {
+    let err = new Error(
+      "Tab must be one of 'finished', 'current', or 'upcoming'"
+    );
+    err.status = 400;
+    return next(err);
+  }
+  next();
+}
+
 module.exports = {
   validateRequiredKeys,
   validateValueTypes,
@@ -232,5 +244,6 @@ module.exports = {
   userExists,
   checkPasswords,
   verifyJwt,
-  validateBookExists
+  validateBookExists,
+  verifyTab
 };

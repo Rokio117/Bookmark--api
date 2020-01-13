@@ -25,10 +25,11 @@ const helpers = {
       .where({ userid, bookid })
       .update({ finishedon });
   },
-  patchUserBookInfoOnTab(knex, userid, bookid, ontab) {
+  patchUserBookInfoOnTab(knex, bookInfoid, ontab) {
     return knex("bookmark_user_book_info")
-      .where({ userid, bookid })
-      .update({ ontab });
+      .where({ id: bookInfoid })
+      .update({ ontab })
+      .returning("*");
   },
   findBook(knex, id) {
     return knex("bookmark_books")
@@ -150,6 +151,12 @@ const helpers = {
       .select("id")
       .from("bookmark_user_book_info")
       .where({ id: bookinfoid });
+  },
+  updateUserBook(knex, newBookInfo, bookinfoid) {
+    return knex("bookmark_user_book_info")
+      .update(newBookInfo)
+      .where({ id: bookinfoid })
+      .returning("*");
   }
 };
 
