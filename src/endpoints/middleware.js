@@ -212,11 +212,25 @@ function verifyJwt(req, res, next) {
   next();
 }
 
+function validateBookExists(req, res, next) {
+  bookmarkService
+    .findBook(req.app.get("db"), req.body.bookInfoId)
+    .then(result => {
+      if (result.length === 0) {
+        let err = new Error("Book not found");
+        err.status = 404;
+        return next(err);
+      }
+      next();
+    });
+}
+
 module.exports = {
   validateRequiredKeys,
   validateValueTypes,
   catchError,
   userExists,
   checkPasswords,
-  verifyJwt
+  verifyJwt,
+  validateBookExists
 };

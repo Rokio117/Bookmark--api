@@ -10,6 +10,7 @@ const { userExists } = require("./middleware");
 const { verifyJwt } = require("./middleware");
 const helpers = require("./bookmark-service");
 const authService = require("./auth-service");
+const { validateBookExists } = require("./middleware");
 
 bookmarkRouter.get("/testJwt", jsonBodyParser, verifyJwt, (req, res) => {
   res.json({ ok: true });
@@ -121,10 +122,70 @@ bookmarkRouter.delete(
   jsonBodyParser,
   verifyJwt,
   validateRequiredKeys(["bookInfoId"]),
+  validateBookExists,
   (req, res, next) => {
-    res.json("got through middleware");
+    console.log(req.body.bookInfoId, "req.body.bookInfoId");
+    helpers
+      .deleteUserBookInfo(req.app.get("db"), req.body.bookInfoId)
+      .then(response => {
+        res.json(200);
+      });
   }
 );
+
+bookmarkRouter
+  .route("/:username/notes")
+  .delete(
+    jsonBodyParser,
+    verifyJwt,
+    validateRequiredKeys(["noteId"]),
+    (req, res, next) => {
+      helpers.getNote(req.app.get("db"), req.body.noteId).then(noteId => {
+        if (!noteId.length) {
+          let err = new Error("Note not found");
+          err.status = 404;
+          return next(err);
+        } else
+          helpers
+            .deleteNote(req.app.get("db"), req.body.noteId)
+            .then(response => {
+              res.json(200);
+            });
+      });
+      //2. if it does delete it
+    }
+  )
+  .post(
+    jsonBodyParser,
+    verifyJwt,
+    validateRequiredKeys([
+      "notetitle",
+      "notedate",
+      "notecontent",
+      "bookInfoId"
+    ]),
+    (req, res, next) => {
+      const { notetitle, notedate, notecontent, bookInfoId } = req.body;
+      const newNoteObject = {
+        notetitle,
+        notedate,
+        notecontent,
+        bookinfoid: bookInfoId
+      };
+      console.log(newNoteObject, "newNoteObject");
+      helpers.findBook(req.app.get("db"), bookInfoId).then(foundId => {
+        if (!foundId.length) {
+          let err = new Error("Book for note found");
+          err.status = 404;
+          return next(err);
+        } else {
+          helpers.postNote(req.app.get("db"), newNoteObject).then(response => {
+            res.json(response);
+          });
+        }
+      });
+    }
+  );
 
 bookmarkRouter.use(catchError);
 

@@ -53,6 +53,14 @@ const testHelpers = {
       algorithm: "HS256"
     });
     return `Bearer=${token}`;
+  },
+  authHeader() {
+    const user = {
+      username: "Demo",
+      password: "$2a$12$XFXXLoeBCpkD6nkZtdoSEeI.6BEpEk4cC/djrnYB/Da8HjkC/tmzi",
+      id: 1
+    };
+    return this.makeAuthHeader(user, process.env.JWT_SECRET);
   }
 };
 

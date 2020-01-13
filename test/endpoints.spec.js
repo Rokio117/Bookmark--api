@@ -23,9 +23,10 @@ describe.only("bookmark endpoints", () => {
   afterEach("clean the tables", () => testHelpers.cleanTables(db));
   after("disconnect from db", () => db.destroy());
   beforeEach("seed the table", () => {
-    return testHelpers.seedUsers(db, seedData.users());
+    //return testHelpers.seedUsers(db, seedData.users());
+    return testHelpers.seedAllTables(db, seedData.allTestData());
   });
-  describe("happy case for post new book", () => {
+  describe.skip("happy case for post new book", () => {
     it("tests to see if the userbookinfo was submitted", () => {
       //const authHeader = testData.authHeader();
 
@@ -45,6 +46,24 @@ describe.only("bookmark endpoints", () => {
         .set("Authorization", authHeader)
         .send(testData.newBook())
         .expect(expectedData.expectedUserBookInfo());
+    });
+  });
+  describe("Happy case for deleting a user book info", () => {
+    it("delets a book", () => {
+      return supertest(app)
+        .delete("/api/bookmark/Demo/book/delete")
+        .set("Authorization", testHelpers.authHeader())
+        .send({ bookInfoId: 1 })
+        .expect(200);
+    });
+  });
+  describe.only("Happy test for deleting a note", () => {
+    it("delets a note", () => {
+      return supertest(app)
+        .delete("/api/bookmark/Demo/notes")
+        .set("Authorization", testHelpers.authHeader())
+        .send({ noteId: 1 })
+        .expect(200);
     });
   });
 });

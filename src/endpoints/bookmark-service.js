@@ -88,18 +88,19 @@ const helpers = {
   },
   postNote(knex, noteObject) {
     //noteObject contains notetitle,notedate,notecontent,bookinfoid
-    return knex.insert(noteObject).into("bookmark_notes");
+    return knex
+      .insert(noteObject)
+      .into("bookmark_notes")
+      .returning("*");
   },
   deleteUserBookInfo(knex, bookinfoid) {
     //will also delete notes due to cascade
-    return knex
-      .select("bookmark_user_book_info")
+    return knex("bookmark_user_book_info")
       .where({ id: bookinfoid })
       .del();
   },
   deleteNote(knex, noteid) {
-    return knex
-      .select("bookmark_notes")
+    return knex("bookmark_notes")
       .where({ id: noteid })
       .del();
   },
@@ -132,11 +133,23 @@ const helpers = {
       .where({ bookinfoid });
     //may need to be whereIn
   },
+  getNote(knex, noteId) {
+    return knex
+      .select("*")
+      .from("bookmark_notes")
+      .where({ id: noteId });
+  },
   getUserBookInfo(knex, userid) {
     return knex
       .select("*")
       .from("bookmark_user_book_info")
       .where({ userid });
+  },
+  findBookInfoById(knex, bookinfoid) {
+    return knex
+      .select("id")
+      .from("bookmark_user_book_info")
+      .where({ id: bookinfoid });
   }
 };
 
