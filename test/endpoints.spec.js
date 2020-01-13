@@ -27,13 +27,24 @@ describe.only("bookmark endpoints", () => {
   });
   describe("happy case for post new book", () => {
     it("tests to see if the userbookinfo was submitted", () => {
-      return (
-        supertest(app)
-          .post("/api/bookmark/Demo/books/add")
-          //.set("Authorization", testData.authHeader())
-          .send(testData.newBook())
-          .expect(expectedData.expectedUserBookInfo())
+      //const authHeader = testData.authHeader();
+
+      const user = {
+        username: "Demo",
+        password:
+          "$2a$12$XFXXLoeBCpkD6nkZtdoSEeI.6BEpEk4cC/djrnYB/Da8HjkC/tmzi",
+        id: 1
+      };
+      const authHeader = testHelpers.makeAuthHeader(
+        user,
+        process.env.JWT_SECRET
       );
+
+      return supertest(app)
+        .post("/api/bookmark/userinfo/Demo/books/add")
+        .set("Authorization", authHeader)
+        .send(testData.newBook())
+        .expect(expectedData.expectedUserBookInfo());
     });
   });
 });
@@ -58,3 +69,17 @@ describe.only("bookmark endpoints", () => {
 //     });
 //   });
 // });
+
+//book for add book
+// {
+// 	"ontab":"current",
+// 	"currentpage":null,
+// 	"startedon":null,
+// 	"finishedon":null,
+// 	"userid":1,
+// 	"title":"Go Fish",
+// 	"coverart":"alksda",
+// 	"description":"Go fish",
+// 	"googleid":"12345"
+
+// }

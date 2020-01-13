@@ -8,7 +8,7 @@ const testData = {
   },
   newBook() {
     return {
-      onTab: "finished",
+      ontab: "finished",
       currentpage: null,
       startedon: null,
       finishedon: null,
@@ -23,10 +23,7 @@ const testData = {
     };
   },
   authHeader() {
-    return `Bearer =
-      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-        .eyJ1c2VyX2lkIjoxLCJpYXQiOjE1Nzg2Mjc0ODQsInN1YiI6IkRlbW8ifQ
-        .SB1q4_35AGpThyAhqpDibRB8 - lggHD4DqiBx2y64XlI`;
+    return `Bearer=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1Nzg2Mjc0ODQsInN1YiI6IkRlbW8ifQ.SB1q4_35AGpThyAhqpDibRB8-lggHD4DqiBx2y64XlI`;
   }
 };
 

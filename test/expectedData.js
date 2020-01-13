@@ -32,13 +32,21 @@ const expectedData = {
     };
   },
   expectedUserBookInfo() {
+    return [
+      {
+        id: 1,
+        ontab: "finished",
+        currentpage: null,
+        startedon: null,
+        finishedon: null,
+        userid: 1,
+        bookid: 1
+      }
+    ];
+  },
+  expectedWrongHeader() {
     return {
-      onTab: "finished",
-      currentpage: null,
-      startedon: null,
-      finishedon: null,
-      userid: 1,
-      bookid: 1
+      error: "unauthorized request"
     };
   }
 };

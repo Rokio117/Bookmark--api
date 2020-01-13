@@ -1,4 +1,6 @@
+require("dotenv").config();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const testHelpers = {
   comparePasswords(encryptedPassword, userPassword) {
@@ -43,6 +45,14 @@ const testHelpers = {
           RESTART IDENTITY CASCADE
       `
     );
+  },
+  makeAuthHeader(user, secret = process.env.JWT_SECTET) {
+    console.log(user, "user in make auth header");
+    const token = jwt.sign({ userid: user.id }, secret, {
+      subject: user.username,
+      algorithm: "HS256"
+    });
+    return `Bearer=${token}`;
   }
 };
 

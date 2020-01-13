@@ -13,7 +13,7 @@ authRouter.post(
   "/login",
   jsonBodyParser,
   validateRequiredKeys(["user_name", "password"]),
-  validateValueTypes,
+
   userExists,
   checkPasswords,
   (req, res, next) => {
@@ -32,7 +32,7 @@ authRouter.post(
   "/register",
   jsonBodyParser,
   validateRequiredKeys(["user_name", "password", "repeat_password"]),
-  validateValueTypes,
+
   userExists,
   (req, res, next) => {
     const { password, repeat_password, user_name } = req.body;
@@ -44,6 +44,7 @@ authRouter.post(
     }
     helpers.hashPassword(password).then(hashedPassword => {
       const userObject = { password: hashedPassword, username: user_name };
+      console.log(userObject, "userObject");
       helpers.registerUser(req.app.get("db"), userObject).then(user => {
         const newUser = user[0];
         const responseJwt = {

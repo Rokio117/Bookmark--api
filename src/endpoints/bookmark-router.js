@@ -116,6 +116,16 @@ bookmarkRouter.post(
   }
 );
 
+bookmarkRouter.delete(
+  "/:username/book/delete",
+  jsonBodyParser,
+  verifyJwt,
+  validateRequiredKeys(["bookInfoId"]),
+  (req, res, next) => {
+    res.json("got through middleware");
+  }
+);
+
 bookmarkRouter.use(catchError);
 
 module.exports = bookmarkRouter;

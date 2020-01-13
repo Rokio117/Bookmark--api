@@ -26,7 +26,7 @@ const stringOrNullKeys = [
   "notedate"
 ];
 
-const numberOrNullKeys = ["currentPage", "userid"];
+const numberOrNullKeys = ["currentPage", "userid", "bookInfoId"];
 
 const allPossibleKeys = [
   ...notNullStringKeys,
@@ -110,8 +110,18 @@ function validateValueTypes(req, res, next) {
         }
       }
       if (numberOrNullKeys.includes(receivedKey)) {
+        console.log(req.body[receivedKey], "recieved key");
         //value should be a number or null
-        if (isNaN(req.body[receivedKey]) || req.body[receivedKey] !== null) {
+        if (
+          typeof req.body[receivedKey] !== "number"
+          //  ||
+          // req.body[receivedKey] !== null
+        ) {
+          let err = new Error(`${receivedKey} must be a number or null`);
+          err.status = 400;
+          console.log("5");
+          return next(err);
+        } else if (req.body[receivedKey] !== null) {
           let err = new Error(`${receivedKey} must be a number or null`);
           err.status = 400;
           console.log("5");
@@ -194,6 +204,7 @@ function verifyJwt(req, res, next) {
       algorithms: ["HS256"]
     });
   } catch (error) {
+    console.log(error, "error after jwt verify");
     let err = new Error("Unauthorized request");
     err.status = 401;
     return next(err);
