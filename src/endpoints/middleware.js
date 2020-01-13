@@ -153,7 +153,7 @@ function catchError(err, req, res, next) {
 
 function userExists(req, res, next) {
   //!!!!!! sets user property to req
-
+  console.log(req.body);
   authService
     .getUserWithUserName(req.app.get("db"), req.body.user_name)
     .then(user => {
