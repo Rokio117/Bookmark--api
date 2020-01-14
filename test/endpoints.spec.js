@@ -54,7 +54,7 @@ describe("bookmark endpoints", () => {
         .delete("/api/bookmark/Demo/book/delete")
         .set("Authorization", testHelpers.authHeader())
         .send({ bookInfoId: 1 })
-        .expect(200);
+        .expect(204);
     });
   });
   describe("Happy test for deleting a note", () => {
@@ -63,7 +63,7 @@ describe("bookmark endpoints", () => {
         .delete("/api/bookmark/Demo/notes")
         .set("Authorization", testHelpers.authHeader())
         .send({ noteId: 1 })
-        .expect(200);
+        .expect(204);
     });
   });
   describe("Happy path for adding a note", () => {

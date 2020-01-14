@@ -131,7 +131,7 @@ bookmarkRouter.delete(
     helpers
       .deleteUserBookInfo(req.app.get("db"), req.body.bookInfoId)
       .then(response => {
-        res.json(200);
+        res.status(204).json();
       });
   }
 );
@@ -152,7 +152,7 @@ bookmarkRouter
           helpers
             .deleteNote(req.app.get("db"), req.body.noteId)
             .then(response => {
-              res.json(200);
+              res.status(204).json(200);
             });
       });
       //2. if it does delete it
