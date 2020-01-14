@@ -39,6 +39,7 @@ function validateRequiredKeys(requiredKeys = []) {
   //make sure correct keys are present for each endpoint
   //
   return function(req, res, next) {
+    console.log(req.body, "req.body in validateRequiredKeys");
     const sentKeys = Object.keys(req.body) ? Object.keys(req.body) : [];
     requiredKeys.forEach(key => {
       if (!sentKeys.includes(key)) {

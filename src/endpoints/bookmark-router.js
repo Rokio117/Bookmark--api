@@ -34,15 +34,35 @@ bookmarkRouter.get(
       helpers.getUserBookInfo(knex, userid).then(userbookinfos => {
         if (userbookinfos.length === 0) {
           fullUserBooks = [];
+          const newUserData = {
+            id: userid,
+            username: user.username,
+            books: []
+          };
+          res.json(newUserData);
         } else {
           const allBookInfos = userbookinfos.map(userbookinfo => {
             return helpers.getBook(knex, userbookinfo.bookid).then(bookinfo => {
               return helpers.getNotes(knex, userbookinfo.id).then(booknotes => {
-                //userBookinfo is an object
-                //bookinfo is an object
-                //booknotes is an array
+                return helpers
+                  .getAuthor(req.app.get("db"), userbookinfo.id)
+                  .then(foundAuthors => {
+                    //userBookinfo is an object
+                    //bookinfo is an object
+                    //booknotes is an array
 
-                return { ...userbookinfo, ...bookinfo, notes: booknotes };
+                    let authors = [];
+                    foundAuthors.forEach(foundAuthor =>
+                      authors.push(foundAuthor.author)
+                    );
+                    console.log(authors, "aurhots in db");
+                    return {
+                      ...userbookinfo,
+                      ...bookinfo,
+                      notes: booknotes,
+                      authors: authors
+                    };
+                  });
               });
             });
           });
