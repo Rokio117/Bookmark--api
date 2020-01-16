@@ -55,7 +55,6 @@ bookmarkRouter.get(
                     foundAuthors.forEach(foundAuthor =>
                       authors.push(foundAuthor.author)
                     );
-                    console.log(authors, "aurhots in db");
                     return {
                       ...userbookinfo,
                       ...bookinfo,
@@ -127,10 +126,8 @@ bookmarkRouter.post(
     helpers
       .findOrPostBook(req.app.get("db"), googleid, bookObject)
       .then(bookid => {
-        console.log(bookid, "bookid after find or post book");
-
         const fullUserBook = { ...userBookInfoObject, bookid: bookid };
-        console.log(fullUserBook, "fulluserbook");
+
         helpers
           .postUserBookInfo(req.app.get("db"), fullUserBook)
           .then(response => {
@@ -147,7 +144,6 @@ bookmarkRouter.delete(
   validateRequiredKeys(["bookInfoId"]),
   validateBookExists,
   (req, res, next) => {
-    console.log(req.body.bookInfoId, "req.body.bookInfoId");
     helpers
       .deleteUserBookInfo(req.app.get("db"), req.body.bookInfoId)
       .then(response => {
@@ -195,9 +191,8 @@ bookmarkRouter
         notecontent,
         bookinfoid: bookInfoId
       };
-      console.log(newNoteObject, "newNoteObject");
+
       helpers.findBookInfoById(req.app.get("db"), bookInfoId).then(foundId => {
-        console.log(foundId, "foundId after findbookbyid");
         if (!foundId.length) {
           let err = new Error("Book for note found");
           err.status = 404;
@@ -227,9 +222,7 @@ bookmarkRouter
       const newBookInfo = { currentpage, startedon, finishedon };
 
       helpers.findBookInfoById(req.app.get("db"), bookInfoId).then(foundId => {
-        console.log(bookInfoId, "bookinfoid in patch");
         if (!foundId.length) {
-          console.log(foundId, "found id in error block");
           //traced to here
           let err = new Error("Book not found");
           err.status = 404;

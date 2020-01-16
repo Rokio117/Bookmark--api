@@ -39,7 +39,6 @@ function validateRequiredKeys(requiredKeys = []) {
   //make sure correct keys are present for each endpoint
   //
   return function(req, res, next) {
-    console.log(req.body, "req.body in validateRequiredKeys");
     const sentKeys = Object.keys(req.body) ? Object.keys(req.body) : [];
     requiredKeys.forEach(key => {
       if (!sentKeys.includes(key)) {
@@ -73,7 +72,7 @@ function validateValueTypes(req, res, next) {
       if (!allPossibleKeys.includes(receivedKey)) {
         let err = new Error(`Unexpected key ${receivedKey} in body`);
         err.status = 400;
-        console.log("1");
+
         return next(err);
       }
       if (notNullStringKeys.includes(receivedKey)) {
@@ -85,7 +84,7 @@ function validateValueTypes(req, res, next) {
           //if the key's value is not a string
           let err = new Error(`${receivedKey} must be a string`);
           err.status = 400;
-          console.log("2");
+
           return next(err);
         }
       }
@@ -94,7 +93,7 @@ function validateValueTypes(req, res, next) {
         if (Array.isArray(req.body[receivedKey])) {
           let err = new Error(`${receivedKey} must be an array`);
           err.status = 400;
-          console.log("3");
+
           return next(err);
         }
       }
@@ -106,12 +105,11 @@ function validateValueTypes(req, res, next) {
         ) {
           let err = new Error(`${receivedKey} must be a string or null`);
           err.status = 400;
-          console.log("4");
+
           return next(err);
         }
       }
       if (numberOrNullKeys.includes(receivedKey)) {
-        console.log(req.body[receivedKey], "recieved key");
         //value should be a number or null
         if (
           typeof req.body[receivedKey] !== "number"
@@ -120,16 +118,16 @@ function validateValueTypes(req, res, next) {
         ) {
           let err = new Error(`${receivedKey} must be a number or null`);
           err.status = 400;
-          console.log("5");
+
           return next(err);
         } else if (req.body[receivedKey] !== null) {
           let err = new Error(`${receivedKey} must be a number or null`);
           err.status = 400;
-          console.log("5");
+
           return next(err);
         }
       }
-      console.log("6");
+
       //next();
     });
     next();
@@ -154,7 +152,7 @@ function catchError(err, req, res, next) {
 
 function userExists(req, res, next) {
   //!!!!!! sets user property to req
-  console.log(req.body);
+
   authService
     .getUserWithUserName(req.app.get("db"), req.body.user_name)
     .then(user => {
@@ -205,7 +203,6 @@ function verifyJwt(req, res, next) {
       algorithms: ["HS256"]
     });
   } catch (error) {
-    console.log(error, "error after jwt verify");
     let err = new Error("Unauthorized request");
     err.status = 401;
     return next(err);

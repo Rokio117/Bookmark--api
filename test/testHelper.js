@@ -47,7 +47,6 @@ const testHelpers = {
     );
   },
   makeAuthHeader(user, secret = process.env.JWT_SECTET) {
-    console.log(user, "user in make auth header");
     const token = jwt.sign({ userid: user.id }, secret, {
       subject: user.username,
       algorithm: "HS256"

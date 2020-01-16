@@ -44,7 +44,7 @@ authRouter.post(
     }
     helpers.hashPassword(password).then(hashedPassword => {
       const userObject = { password: hashedPassword, username: user_name };
-      console.log(userObject, "userObject");
+
       helpers.registerUser(req.app.get("db"), userObject).then(user => {
         const newUser = user[0];
         const responseJwt = {
