@@ -189,7 +189,7 @@ function checkPasswords(req, res, next) {
 
 function verifyJwt(req, res, next) {
   const authToken = req.get("Authorization") || "";
-
+  console.log(authToken, "authToken in verifyJwt");
   let bearerToken;
   if (!authToken.toLowerCase().startsWith("bearer")) {
     let err = new Error(`Missing bearer token`);
