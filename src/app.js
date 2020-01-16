@@ -17,7 +17,7 @@ app.use(`/api/bookmark`, bookmarkRouter);
 app.use(`/api/auth`, authRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello, world!");
+  res.send("Sup holmes");
 });
 
 app.use(function errorHandler(error, req, res, next) {
