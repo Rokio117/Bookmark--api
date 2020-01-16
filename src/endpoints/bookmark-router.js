@@ -36,7 +36,7 @@ bookmarkRouter.get(
           fullUserBooks = [];
           const newUserData = {
             id: userid,
-            username: user.username,
+            username: user[0].username,
             books: []
           };
           res.json(newUserData);
@@ -172,7 +172,7 @@ bookmarkRouter
           helpers
             .deleteNote(req.app.get("db"), req.body.noteId)
             .then(response => {
-              res.status(204).json(200);
+              res.status(204).send();
             });
       });
       //2. if it does delete it
@@ -225,8 +225,12 @@ bookmarkRouter
     (req, res, next) => {
       const { currentpage, startedon, finishedon, bookInfoId } = req.body;
       const newBookInfo = { currentpage, startedon, finishedon };
+
       helpers.findBookInfoById(req.app.get("db"), bookInfoId).then(foundId => {
+        console.log(bookInfoId, "bookinfoid in patch");
         if (!foundId.length) {
+          console.log(foundId, "found id in error block");
+          //traced to here
           let err = new Error("Book not found");
           err.status = 404;
           return next(err);

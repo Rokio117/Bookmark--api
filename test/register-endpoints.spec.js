@@ -20,7 +20,7 @@ describe("register tests", () => {
   before("clean tables", () => testHelpers.cleanTables(db));
   afterEach("clean tables", () => testHelpers.cleanTables(db));
 
-  describe.skip("Post /api/auth/register", () => {
+  describe("Post /api/auth/register", () => {
     //sometimes passes sometimes fails based on the IID of jwt in the response
     //if failing try run independently
     it(`happy case, responds with new  user info andhashed pw and jwt token`, () => {
@@ -31,8 +31,7 @@ describe("register tests", () => {
       const expectedReturn = {
         id: 1,
         username: "Demo",
-        password:
-          "$2a$12$XFXXLoeBCpkD6nkZtdoSEeI.6BEpEk4cC/djrnYB/Da8HjkC/tmzi",
+
         authToken: authToken
       };
       return supertest(app)

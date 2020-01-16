@@ -66,11 +66,11 @@ describe("Auth Endpoints", () => {
           .expect(400, { error: `Incorrect username or password` });
       });
     });
-    describe.skip(`happy path for post login`, () => {
+    describe(`happy path for post login`, () => {
       //due to the jwt issued at times this test may or may not pass when run in conjunction
       //with other tests due to timing
       //if that happens run it by itself
-      it.skip(`responds 200 and JWT auth token using secret when valid credentials`, () => {
+      it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
         const testUser = expectedData.testUser();
         const loginCredentials = {
           user_name: testUser.user_name,
