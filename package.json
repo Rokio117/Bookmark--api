@@ -12,7 +12,8 @@
     "migrate": "postgrator --config postgrator-config.js",
     "dropTestTables": "psql -U postgres -d bookmark-capstone-test -f ./seeds/drop.tables.sql",
     "seed": "psql -U postgres -d bookmark-capstone-test -f ./seeds/seed.bookmark_tables.sql",
-    "truncate": "psql -U postgres -d bookmark-capstone-test -f ./seeds/truncate.bookmark_tables.sql"
+    "truncate": "psql -U postgres -d bookmark-capstone-test -f ./seeds/truncate.bookmark_tables.sql",
+    "seedTables": "psql -U postgres -d bookmark-capstone -f ./seeds/seed.bookmark_tables.sql"
   },
   "keywords": [],
   "engines": {
