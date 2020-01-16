@@ -68,14 +68,17 @@ const helpers = {
   },
   findOrPostAuthor(knex, author, bookid) {
     return knex
-      .select("id")
+      .select("*")
       .from("bookmark_authors")
       .where({ author, bookid })
       .then(foundId => {
         if (!foundId.length) {
           const newAuthor = { author, bookid };
-          return knex.insert(newAuthor).returning("id");
-        } else return foundId[0];
+          return knex
+            .insert(newAuthor)
+            .into("bookmark_authors")
+            .returning("*");
+        } else return foundId;
       });
   },
   postUserBookInfo(knex, bookinfo) {

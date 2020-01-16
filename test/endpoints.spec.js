@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const app = require("../src/app");
 const seedData = require("./seedData");
 const testData = require("./testData");
-describe("bookmark endpoints", () => {
+describe.only("bookmark endpoints", () => {
   let db;
   before("make knex instance", () => {
     db = knex({
@@ -26,7 +26,7 @@ describe("bookmark endpoints", () => {
     //return testHelpers.seedUsers(db, seedData.users());
     return testHelpers.seedAllTables(db, seedData.allTestData());
   });
-  describe("happy case for post new book", () => {
+  describe.only("happy case for post new book", () => {
     it("tests to see if the userbookinfo was submitted", () => {
       //const authHeader = testData.authHeader();
 

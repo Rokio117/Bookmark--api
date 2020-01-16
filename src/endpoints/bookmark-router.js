@@ -95,11 +95,13 @@ bookmarkRouter.post(
     "title",
     "coverart",
     "description",
-    "googleid"
+    "googleid",
+    "authors"
   ]),
   verifyTab,
   (req, res, next) => {
     const {
+      authors,
       ontab,
       currentpage,
       startedon,
@@ -126,13 +128,25 @@ bookmarkRouter.post(
     helpers
       .findOrPostBook(req.app.get("db"), googleid, bookObject)
       .then(bookid => {
-        const fullUserBook = { ...userBookInfoObject, bookid: bookid };
+        const getAuthors = authors.map(author => {
+          helpers
+            .findOrPostAuthor(req.app.get("db"), author, bookid)
+            .then(response => {
+              console.log(response, "response of find or post author");
+              return response[0];
+            });
+        });
+        Promise.all(getAuthors).then(foundAuthors => {
+          console.log(foundAuthors, "foundauthors after get or find authors");
+          const fullUserBook = { ...userBookInfoObject, bookid: bookid };
 
-        helpers
-          .postUserBookInfo(req.app.get("db"), fullUserBook)
-          .then(response => {
-            res.json(response);
-          });
+          helpers
+            .postUserBookInfo(req.app.get("db"), fullUserBook)
+            .then(response => {
+              console.log(response, "response of postUserbookInfo");
+              res.json(response);
+            });
+        });
       });
   }
 );
@@ -147,7 +161,7 @@ bookmarkRouter.delete(
     helpers
       .deleteUserBookInfo(req.app.get("db"), req.body.bookInfoId)
       .then(response => {
-        res.status(204).json();
+        res.status(204).send();
       });
   }
 );
@@ -168,7 +182,7 @@ bookmarkRouter
           helpers
             .deleteNote(req.app.get("db"), req.body.noteId)
             .then(response => {
-              res.status(204).send();
+              res.status(204).json("ok");
             });
       });
       //2. if it does delete it

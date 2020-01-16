@@ -40,7 +40,8 @@ const expectedData = {
         startedon: null,
         finishedon: null,
         userid: 1,
-        bookid: 1
+        bookid: 1,
+        authors: ["Patrick Rothfuss"]
       }
     ];
   },

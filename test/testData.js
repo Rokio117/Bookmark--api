@@ -13,7 +13,7 @@ const testData = {
       startedon: null,
       finishedon: null,
       userid: 1,
-
+      authors: ["Patrick Rothfuss"],
       title: "The Name of the Wind",
       coverart:
         "http://books.google.com/books/content?id=c-qcoAEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
