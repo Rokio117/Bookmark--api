@@ -1,11 +1,11 @@
-# Trivia Tracker API
+# Bookmark! API
 
-Live app: https://trivia-tracker-app-alpha-six.now.sh/
+Live app: https://bookmark-opal-five.now.sh/
 
-Trivia Tracker client can be found at: https://github.com/Rokio117/trivia-tracker
+Bookmark client can be found at: https://github.com/Rokio117/Bookmark-
 
 ## Technologies
-Trivia Tracker API was created using Node.js, ExpressJs, and postgreSQL
+Bookmark API was created using Node.js, ExpressJs, and postgreSQL
 
 
 ## Login and Register Endpoints
