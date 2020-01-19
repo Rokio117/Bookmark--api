@@ -1,10 +1,8 @@
 const express = require("express");
-const jsonBodyParser = express.json();
 const jwt = require("jsonwebtoken");
 const config = require("../config");
 const authService = {
   getUserWithUserName(knex, username) {
-    //retuns array where index 0 is player
     return knex
       .select("*")
       .from("bookmark_users")

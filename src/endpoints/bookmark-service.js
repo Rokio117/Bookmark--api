@@ -37,7 +37,6 @@ const helpers = {
       .where({ id });
   },
   findOrPostBook(knex, googleid, bookObject) {
-    //returns id as number
     return knex
       .select("id")
       .from("bookmark_books")
@@ -48,19 +47,14 @@ const helpers = {
             .insert(bookObject)
             .returning("id")
             .then(result => {
-              //sends an array with one number in it
-
               return result[0];
             });
         } else {
-          //sends an array with an object with key id in it
-
           return foundId[0].id;
         }
       });
   },
   findAuthor(knex, name, bookid) {
-    //returns array of found author including
     return knex
       .select("*")
       .from("bookmark_authors")
@@ -107,8 +101,6 @@ const helpers = {
       .del();
   },
   getBook(knex, bookid) {
-    //returns book object
-    //works!
     return knex
       .select("*")
       .from("bookmark_books")
@@ -118,22 +110,16 @@ const helpers = {
       });
   },
   getAuthor(knex, bookid) {
-    //sends back list since more than one auther may be possible
-    //works!
     return knex
       .select("*")
       .from("bookmark_authors")
       .where({ bookid });
-
-    //may need to be whereIn
   },
   getNotes(knex, bookinfoid) {
-    //sucessfully gets all notes for a book!!!!!
     return knex
       .select("*")
       .from("bookmark_notes")
       .where({ bookinfoid });
-    //may need to be whereIn
   },
   getNote(knex, noteId) {
     return knex

@@ -17,9 +17,6 @@ describe("Auth Endpoints", () => {
     });
     app.set("db", db);
   });
-
-  //const allData = seedData.allTestData();
-
   after("disconnect from db", () => db.destroy());
   before("clean tables", () => testHelpers.cleanTables(db));
   afterEach("clean tables", () => testHelpers.cleanTables(db));
@@ -98,18 +95,10 @@ describe("Auth Endpoints", () => {
           authToken: authJwt
         };
 
-        return (
-          supertest(app)
-            .post("/api/auth/login")
-            .send({ user_name: "Demo", password: "password" })
-            // .then(response=>{
-            //   let {id,username,password,authToken} = response
-
-            //   authToken = testHelpers.splitTokens(authToken)
-            //   return {id,username,password,authToken}
-            // })
-            .expect(expectedUserObject)
-        );
+        return supertest(app)
+          .post("/api/auth/login")
+          .send({ user_name: "Demo", password: "password" })
+          .expect(expectedUserObject);
       });
     });
   });

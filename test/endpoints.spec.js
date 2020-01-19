@@ -3,7 +3,7 @@ const knex = require("knex");
 const supertest = require("supertest");
 const testHelpers = require("./testHelper");
 const expectedData = require("./expectedData");
-const jwt = require("jsonwebtoken");
+
 const app = require("../src/app");
 const seedData = require("./seedData");
 const testData = require("./testData");
@@ -23,13 +23,10 @@ describe("bookmark endpoints", () => {
   afterEach("clean the tables", () => testHelpers.cleanTables(db));
   after("disconnect from db", () => db.destroy());
   beforeEach("seed the table", () => {
-    //return testHelpers.seedUsers(db, seedData.users());
     return testHelpers.seedAllTables(db, seedData.allTestData());
   });
   describe("happy case for post new book", () => {
     it("tests to see if the userbookinfo was submitted", () => {
-      //const authHeader = testData.authHeader();
-
       const user = {
         username: "Demo",
         password:
@@ -94,38 +91,3 @@ describe("bookmark endpoints", () => {
     });
   });
 });
-
-// describe("tests for post book", () => {
-//   before("add user to tables", () => {
-//     testHelpers.seedUsers(db, seedData.users());
-//   });
-//   const requiredKeys = Object.keys(testData.newBook());
-//   requiredKeys.forEach(key => {
-//     const bookToAdd = testData.newBook();
-//     delete bookToAdd[key];
-//     it("responds with 400 missing key __", () => {
-//       return (
-//         supertest(app)
-//           .post(`/api/bookmark/userinfo/`)
-//           .set("Content-Type", "application/json")
-//           //.set(`Authorization`, `${testData.authHeader()}`)
-//           .send(bookToAdd)
-//           .expect(400, { error: `Missing key '${key}' in request body` })
-//       );
-//     });
-//   });
-// });
-
-//book for add book
-// {
-// 	"ontab":"current",
-// 	"currentpage":null,
-// 	"startedon":null,
-// 	"finishedon":null,
-// 	"userid":1,
-// 	"title":"Go Fish",
-// 	"coverart":"alksda",
-// 	"description":"Go fish",
-// 	"googleid":"12345"
-
-// }

@@ -1,5 +1,4 @@
 const authService = require("../src/endpoints/auth-service");
-const helpers = require("../src/endpoints/bookmark-service");
 const expectedData = {
   testUser() {
     return {

@@ -3,9 +3,6 @@ const knex = require(`knex`);
 const supertest = require("supertest");
 const app = require("../src/app");
 const testHelpers = require("./testHelper");
-const expectedData = require("./expectedData");
-const seedData = require("./seedData");
-const jwt = require("jsonwebtoken");
 const testData = require("./testData");
 
 describe("register tests", () => {
@@ -22,7 +19,7 @@ describe("register tests", () => {
 
   describe("Post /api/auth/register", () => {
     //sometimes passes sometimes fails based on the IID of jwt in the response
-    //if failing try run independently
+    //if failing try running independently
     it(`happy case, responds with new  user info andhashed pw and jwt token`, () => {
       const authToken = testHelpers
         .authHeader()
@@ -42,21 +39,3 @@ describe("register tests", () => {
     });
   });
 });
-
-// .then(result => {
-//           const resultTokenNoIID = result.authToken
-//             .split(".")
-//             .pop()
-//             .join(".");
-//           const newResult = {
-//             id: result.id,
-//             password: result.password,
-//             username: result.username,
-//             authToken: resultTokenNoIID
-//           };
-//           return newResult;
-//         })
-
-//  let authTokenNoIID = authToken.split(".");
-//  authTokenNoIID.pop();
-//  authTokenNoIID = authTokenNoIID.join(".");
